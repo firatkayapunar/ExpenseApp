@@ -1,0 +1,41 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register Page";
+}
+
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2>Expense App<br> Register Page</h2>
+        <p>
+            You can sign up here or log in with the login button to access the system.
+        </p>
+    </div>
+</div>
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger small"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RePassword">Password</label>
+                    <input asp-for="RePassword" class="form-control" />
+                    <span asp-validation-for="RePassword" class="text-danger small"></span>
+                </div>
+                <button type="submit" class="btn btn-black">Register</button>
+                <a asp-page="Login" class="btn btn-secondary">Login</a>
+                <a asp-page="Index" class="btn btn-warning mt-2">ReturnToHomePage</a>
+            </form>
+        </div>
+    </div>
+</div>

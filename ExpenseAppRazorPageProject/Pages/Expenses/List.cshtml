@@ -1,0 +1,593 @@
+﻿@page
+@using MFramework.Services.FakeData
+@model ListModel
+@{
+    ViewData["Title"] = "Expenses";
+    string[] categories = new string[] { "İletişim", "Ulaşım", "Seyahat", "Giyim" };
+}
+
+@section Styles{
+    <link href="~/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+
+<div class="container">
+
+    <div class="row mb-3">
+        <div class="col">
+            <h1>Expenses</h1>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        @*HTML'de <canvas> elementi, web sayfalarında dinamik ve etkileşimli grafikler, çizimler ve animasyonlar oluşturmak için kullanılır. JavaScript ile birlikte kullanıldığında, <canvas> geniş bir yelpazede görsel içerik üretmek için güçlü bir araç haline gelir.*@
+        <div class="col-4">
+            <canvas id="firstChart" height="200"></canvas>
+        </div>
+        <div class="col-4">
+            <canvas id="secondChart" height="200"></canvas>
+        </div>
+        <div class="col-4">
+            <canvas id="thirdChart" height="200"></canvas>
+        </div>
+
+
+    </div>
+
+    <div class="row mb-3">
+        <div class="col">
+            <a asp-page="Create" class="btn btn-primary btn-sm">
+                Create New Expense
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col">
+            <table id="expensestable" class="table table-bordered table-sm text-center">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th data-orderable="false"></th>
+
+                        @*HTML5'te data-* öznitelikleri, özel veri öznitelikleri olarak adlandırılır ve geliştiricilerin HTML öğelerine ek veri eklemesine olanak tanır. Bu öznitelikler, JavaScript veya CSS kullanarak veri değerlerine kolayca erişmek ve bunları manipüle etmek için kullanılır.
+
+                            data-* Özniteliklerinin Kullanımı
+                            data-* öznitelikleri, data- önekiyle başlayan ve ardından geliştiricinin belirlediği bir adla devam eden özel özniteliklerdir. Bu öznitelikler HTML5 standardına uygun olup, herhangi bir HTML öğesine eklenebilir.*@
+
+                        @*Örnek Kullanım*@
+                        @*<div id="myDiv" data-user-id="12345" data-user-role="admin">User Info</div>*@
+
+                        @*Bu örnekte, div öğesine iki özel veri özniteliği eklenmiştir: data-user-id ve data-user-role. Bu öznitelikler, öğe hakkında ek bilgi sağlar ve JavaScript ile kolayca erişilebilir.*@
+
+                        @*JavaScript ile data-* Özniteliklerine Erişim
+                            JavaScript kullanarak data-* özniteliklerine erişmek ve bunları manipüle etmek çok kolaydır. Bu, dataset özelliği kullanılarak yapılır.*@
+
+                        @*Veri Okuma
+
+                            // HTML öğesini seçme
+                            var myDiv = document.getElementById('myDiv');
+
+                            // data-* özniteliklerine erişim
+                            var userId = myDiv.dataset.userId; // "12345"
+                            var userRole = myDiv.dataset.userRole; // "admin"
+
+                            console.log(userId); // "12345"
+                            console.log(userRole); // "admin"
+                        *@
+
+                        @*Veri Yazma
+
+                            // HTML öğesini seçme
+                            var myDiv = document.getElementById('myDiv');
+
+                            // data-* özniteliklerine yeni değerler atama
+                            myDiv.dataset.userId = "67890";
+                            myDiv.dataset.userRole = "editor";
+
+                            console.log(myDiv.dataset.userId); // "67890"
+                            console.log(myDiv.dataset.userRole); // "editor"*@
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var expense in Model.Expenses)
+                    {
+
+                        <tr>
+                            <td>@expense.Category</td>
+
+                            @*DataTable da tarih sıralaması yaparken anlayamıyor. Onun için başka bir yol deniyoruz.*@
+
+                            @*
+                                Ticks, .NET framework içerisinde DateTime yapısının bir üyesidir ve DateTime'ı tam olarak tanımlamak için kullanılan en küçük zaman birimidir. Ticks, 1 Ocak 0001 saat 00:00:00'dan itibaren geçen 100-nanosecond (1 tick = 100 nanoseconds) sayısını ifade eder.
+                                Bu kod parçası, date değişkeninin Ticks değerini kullanarak bir veri sıralama işlemi gerçekleştirmek için HTML tablo hücresine data-order attribute'u ekliyor.
+                            *@
+
+                            <td data-order="@expense.Date.Ticks">@expense.Date.ToShortDateString()</td>
+                            <td>@expense.Price.ToString("C2")</td>
+                            <td>@expense.Description</td>
+                            <td width="90">
+                                @*<a> etiketi ile yapılan istekler varsayılan olarak GET isteğidir. Ancak, ASP.NET Core Razor Pages ile, <a> etiketine asp-page-handler ekleyerek belirli bir işleyiciye yönlendirme yapabiliriz.*@
+
+                                @*Bu buton, Edit sayfasına bir GET isteği yapar ve OnGet veya OnGetAsync işleyicisini çağırır.*@
+                                <a asp-page="Edit" asp-route-id="@expense.Id" class="btn btn-sm">
+                                    <i class="fa fa-edit text-info"></i>
+                                </a>
+                                @*Bu buton, List sayfasında Delete işleyicisini çağırmak için bir GET isteği yapar ve OnGetDelete veya OnGetDeleteAsync işleyicisini çağırır.
+                                    Ayrıca confirm metodundan dönen değere göre istenilen sayfaya gidilir veya gidilmez.
+                                *@
+                                <a onclick="return confirm('İlgili Harcama silinsin mi?')" asp-page="List" asp-page-handler="Delete" asp-route-id="@expense.Id" class="btn btn-sm">
+                                    <i class="fa fa-trash text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@{
+    //Örneğin, elimizde aşağıdaki gibi bir Model.Expenses koleksiyonu olsun:
+
+    //var expenses = new List<Expense>
+    //{
+    //new Expense { Category = "Food", Price = 10 },
+    //new Expense { Category = "Transport", Price = 20 },
+    //new Expense { Category = "Food", Price = 15 }
+    //};
+
+    //GroupBy İşlemi
+    //GroupBy işlemi sonucunda aşağıdaki yapıda bir koleksiyon oluşur:
+
+    //var groupedExpenses = expenses.GroupBy(x => x.Category);
+    //Bu groupedExpenses koleksiyonu, her biri bir grup olan elemanlar içerir.Her grup, aynı Category değerine sahip tüm Expense nesnelerini içerir.
+
+    //groupedExpenses Koleksiyonunun İçeriği:
+
+    //Grup:
+
+    //Key: "Food"
+    //Values:
+    //    [
+    //        new Expense { Category = "Food", Price = 10 },
+    //        new Expense { Category = "Food", Price = 15 }
+    //    ]
+    //Grup:
+
+    //Key: "Transport"
+    //Values:
+    //    [
+    //        new Expense { Category = "Transport", Price = 20 }
+    //    ]
+
+    //Select İşlemi
+    //Select işlemi ile her grup üzerinden iterasyon yapılarak, anonim nesneler oluşturulur:
+
+    //var grp1 = expenses.GroupBy(x => x.Category)
+    //                   .Select(y => new
+    //                   {
+    //                       Category = y.Key,
+    //                       Count = y.Count(),
+    //                       Total = y.Sum(z => z.Price)
+    //                   });
+
+    //Bu işlemin sonucunda şu anonim nesnelerden oluşan bir koleksiyon elde edilir:
+
+    //İlk grup için:
+
+    //Category: "Food"
+    //Count: 2(bu grupta 2 Expense nesnesi var)
+    //Total: 25(bu gruptaki Expense nesnelerinin Price toplamı: 10 + 15)
+
+    //İkinci grup için:
+
+    //Category: "Transport"
+    //Count: 1(bu grupta 1 Expense nesnesi var)
+    //Total: 20(bu gruptaki Expense nesnesinin Price toplamı: 20)
+
+    //Sonuç olarak, grp1 koleksiyonu şu yapıda olacaktır:
+
+    //[
+    //    { Category = "Food", Count = 2, Total = 25 },
+    //    { Category = "Transport", Count = 1, Total = 20 }
+    //]
+
+
+    var numberOfExpendituresByCategories = Model.Expenses.GroupBy(x => x.Category).Select(y => new
+    {
+        Category = y.Key,
+        Count = y.Count(),
+        Total = y.Sum(z => z.Price)
+    }
+    );
+
+    var expendituresByYears = Model.Expenses.GroupBy(x => x.Date.Year).Select(y => new
+    {
+        Year = y.Key,
+        Count = y.Count()
+    }
+    );
+
+    var expendituresTotalsByYears = Model.Expenses.GroupBy(x => x.Date.Year).Select(y => new
+    {
+        Year = y.Key,
+        Total = y.Sum(z => z.Price)
+    }
+    );
+
+}
+
+@section Scripts{
+    @*DataTables, bir HTML tabloyu DataTable nesnesine dönüştürmek için çağrılan bir jQuery eklentisidir. Bu da fonksiyon çağrısı gibi görünse de, aslında bir DataTables nesnesi döner.*@
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    @*Chart.js yüklendiğinde, Chart constructor fonksiyonu window nesnesi altında tanımlanır. Bu sayede global bir erişime sahip olur ve herhangi bir yerden Chart constructor'ını kullanarak grafik oluşturabilirsiniz. Ayrıca yukarıdaki gibi local'e indirerek de yerleşik olarak kullanabilirim.'*@
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+    //********************************************************************
+
+        //Kütüphane, belirli bir işlevi veya bir dizi işlevi gerçekleştirmek için önceden yazılmış, tekrar kullanılabilir kod bloklarını içeren bir yazılım bileşenidir.Kütüphaneler, yazılım geliştiricilere zaman kazandırır ve kodun bakımını kolaylaştırır.
+
+        //jQuery
+        //jQuery, bir JavaScript kütüphanesidir.
+        //jQuery, saf(pure) JavaScript kullanılarak yazılmıştır ve tarayıcılar arasında tutarlı bir şekilde çalışmayı sağlar.
+        //jQuery'nin temel amacı, DOM manipülasyonu, olay yönetimi, animasyonlar ve Ajax işlemlerini daha basit ve kullanıcı dostu hale getirmektir.
+
+        //Örneğin, bir HTML elementini gizlemek için saf JavaScript ile yazılması gereken kod:
+        //document.getElementById('myElement').style.display = 'none';
+
+        //jQuery ile daha kısa ve basit hale gelir:
+        //$('#myElement').hide();
+
+        //DataTables
+        //DataTables, bir JavaScript kütüphanesidir ve jQuery üzerine inşa edilmiştir.
+        //DataTables, HTML tablolarını zenginleştirir ve arama, sıralama, sayfalama gibi özellikler ekler.
+        //DataTables kütüphanesinin çalışabilmesi için jQuery kütüphanesine ihtiyaç vardır, çünkü DataTables, jQuery'nin işlevlerini kullanır.
+
+        //DataTables'in Başlıca Özellikleri:
+
+        // Sıralama(Sorting): Tablo sütunlarını artan veya azalan sırada sıralayabilirsiniz.
+
+        // Sayfalama(Pagination): Büyük veri kümelerini sayfalara bölebilir ve sayfalar arasında gezinme imkanı sağlar.
+
+        // Filtreleme(Filtering / Search): Kullanıcıların tablo verilerini belirli kriterlere göre filtrelemesine olanak tanır.
+
+        // Özelleştirme: Tablo düzenini ve görünümünü özelleştirebilirsiniz.
+
+        //Bağımlılık İlişkisi
+
+        //jQuery:
+        //Arka planda saf JavaScript kullanılarak yazılmıştır.
+        //Saf JavaScript ile yapılabilecek işlemleri daha basit ve tutarlı bir şekilde yapmayı sağlar.
+
+        //DataTables:
+        //jQuery'ye dayalı olarak çalışır.
+        //jQuery'nin sağladığı işlevleri genişletir ve tabloları zenginleştirir.
+        //DataTables'in çalışabilmesi için jQuery'nin sayfada yüklü olması gerekir.
+
+        //jQuery'nin Genişletilebilirliği
+        //jQuery, kendi fonksiyonlarını ve metodlarını genişletmeye izin veren bir yapıya sahiptir.Bu, jQuery'nin çekirdek fonksiyonlarına yeni metodlar ekleyebileceğiniz anlamına gelir. Bu özellik, jQuery eklentilerinin (plugins) oluşturulmasını sağlar.
+
+        //DataTables ve jQuery Eklentileri
+        //DataTables bir jQuery eklentisidir.Bu, DataTables'in jQuery'nin çekirdek fonksiyonlarına yeni metodlar ekleyerek çalıştığı anlamına gelir.DataTables eklentisi, jQuery'nin prototipine yeni bir DataTable metodu ekler.
+
+        //Nasıl Çalışır ?
+        //jQuery'nin fn (function) nesnesi, tüm jQuery metodlarını içerir. DataTables gibi eklentiler, bu fn nesnesine yeni metodlar ekler. Örneğin:
+
+        // jQuery prototipine yeni bir metod ekleyelim
+        //jQuery.fn.newMethod = function () {
+        //    // Bu, jQuery nesnesine yeni bir metod ekler
+        //    console.log('Bu yeni bir jQuery metodu.');
+        //    return this; // jQuery'nin zincirleme (chaining) yapısına uygun olması için this döndürülür
+        //};
+
+        //Artık newMethod adlı yeni bir jQuery metoduna sahibiz ve bunu herhangi bir jQuery nesnesi üzerinde kullanabiliriz.
+
+    //********************************************************************
+
+        //jQuery'de $ sembolü, jQuery fonksiyonunu temsil eden bir kısayoldur. JavaScript'te geçerli bir değişken ismi olarak kullanılabilir ve jQuery'nin kendine özgü bir sembolü olarak tanımlanmıştır.
+
+        //$ Sembolünün İşlevi
+        //$ sembolü, jQuery fonksiyonunu çağırmak ve DOM(Document Object Model) elemanlarını seçmek, manipüle etmek, olayları yönetmek ve AJAX işlemlerini gerçekleştirmek için kullanılır.$ sembolü, jQuery'nin basit ve hızlı bir şekilde kullanılabilmesini sağlar. Örneğin:
+
+        //Belirli bir id'ye sahip olan HTML elementini seçmek
+        //$('#myElement').hide(); // Elementi gizler
+
+        //Belirli bir sınıfa sahip olan HTML elementlerini seçmek
+        //$('.myClass').css('color', 'red'); // Elementlerin yazı rengini kırmızı yapar
+
+        //$ Neyin Kısaltmasıdır ?
+
+        //$ sembolü, doğrudan jQuery fonksiyonunu temsil eder ve aslında bir kısaltma değildir.jQuery'nin geliştiricileri, bu sembolü jQuery fonksiyonunu çağırmak için kullanmayı seçmişlerdir.
+
+        //Alternatif Kullanım
+
+        //JavaScript'te bazı kütüphaneler de $ sembolünü kullanabilir. Bu durumda, iki kütüphane aynı sembolü kullanmaya çalıştığında çakışma yaşanabilir. Örneğin, jQuery ve Prototype.js her ikisi de $ sembolünü kullanır. Ancak bu çakışma, jQuery'de noConflict yöntemi ile önlenebilir.
+
+        //Örnek Açıklama ve Kullanım
+        //Eğer sayfanızda hem jQuery hem de Prototype.js kullanıyorsanız, $ sembolü her iki kütüphane tarafından da kullanılır.Bu durumda, jQuery'nin noConflict yöntemi ile çakışmayı önleyebiliriz:
+
+            @*<script src = "prototype.js" ></script>
+            <script src="jquery.js"></script>
+            <script>
+                 // Prototype.js'nin $ sembolünü kullanmasına izin verir
+                 jQuery.noConflict();
+
+                 // jQuery'yi jQuery değişkeni ile kullanırız
+                 jQuery(document).ready(function ($) {
+                 // Burada $ sembolünü jQuery olarak kullanabiliriz
+                 $('#myElement').hide();
+                });
+
+                // Prototype.js'yi $ sembolü ile kullanırız
+                $('myElement').hide();
+           </script>*@
+
+        @*Bu örnekte, jQuery.noConflict() yöntemi ile jQuery'nin $ sembolü kullanımını bırakmasını sağlıyoruz. Daha sonra, jQuery işlevlerini jQuery değişkeni ile kullanıyoruz ve aynı zamanda Prototype.js'nin $ sembolünü kullanmasına izin veriyoruz. Bu sayede iki kütüphane arasında çakışma olmadan her ikisini de kullanabiliriz.*@
+
+        @*Özetle, $ sembolü jQuery'nin kolay ve hızlı bir şekilde kullanılabilmesini sağlayan, jQuery fonksiyonunu temsil eden bir kısayoldur.*@
+
+    //********************************************************************
+
+    //$(function () {...}); kullanımı $(document).ready(function () {...}); ile eşdeğerdir.Her iki ifade de, DOM(Document Object Model) tamamen yüklendiğinde ve hazır olduğunda çalıştırılacak kodu tanımlar.Bu iki kullanımın nasıl eşdeğer olduğunu anlamak için jQuery'nin document ready fonksiyonunu nasıl çalıştırdığına ve her iki kullanımın arkasındaki mantığa bakalım.
+
+    //1. $(document).ready(function () {...});
+    //Bu, jQuery'nin eski ve yaygın kullanılan bir yoludur. Burada, document öğesi jQuery tarafından seçilir ve ready fonksiyonu çağrılır. ready fonksiyonu, parametre olarak geçen fonksiyonu, DOM tamamen yüklendiğinde çalıştırır.
+
+    //Örnek:
+
+    //$(document).ready(function () {
+    //    // DOM yüklendiğinde çalışacak kodlar buraya yazılır
+    //    $("#expensesTable").DataTable();
+    //});
+
+    //2. $(function () {...});
+    //Bu, jQuery'nin daha kısa ve daha modern bir yoludur. Bu ifade, jQuery'nin kendi içindeki ready fonksiyonunu çağırmanın kısa bir yoludur.jQuery, parametre olarak verilen fonksiyonun DOM tamamen yüklendiğinde çalışmasını sağlar.
+
+    //Örnek:
+
+    //$(function () {
+    //    // DOM yüklendiğinde çalışacak kodlar buraya yazılır
+    //    $("#expensesTable").DataTable();
+    //});
+
+    //********************************************************************
+
+        $(function () {
+            //.DataTable(): DataTables kütüphanesinin fonksiyonunu çağırır ve seçilen HTML elementini (bu durumda tabloyu) DataTables özellikleri ile zenginleştirir.
+            $("#expensestable").DataTable(
+                {
+                    //Bir indexli kolonu tersten sırala demiş oldum.
+                    order: [[1,'desc']]
+                }
+            );
+
+            //Chart.js kullanımı
+
+            //firstChart
+
+            const firstChart = document.getElementById('firstChart');
+
+            new Chart(firstChart, {
+                type: 'bar',
+                data: {
+
+
+                @*
+                        Burada ASP.NET Razor Pages framework'ü, HTML encoding işlemini otomatik olarak gerçekleştirir. " ' " ifadesini özel karakter olarak görür.
+                        labels: [@(string.Join(',', numberOfExpendituresByCategories.Select(expense=>"'" + expense.Category + "("+expense.Count+")'")))],
+                *@
+
+                @*
+                        HTML Encoding Neden Gereklidir?
+
+                        XSS Saldırılarına Karşı Koruma:
+
+                        HTML encoding işlemi, HTML kodunda yer alabilecek zararlı içerikleri güvenli hale getirerek XSS (Cross-Site Scripting) saldırılarını engeller. Bir  saldırganın    zararlı        scriptler yerleştirip, bu scriptlerin kullanıcıların tarayıcılarında çalışmasını önler.
+
+                        HTML Doğruluğu:
+
+                        Encoding, HTML belgesinin doğru yapıda olmasını sağlar.Özel karakterler (örneğin <, >, &, ", ') HTML içinde kullanıldığında, bu karakterler HTML etiketleri olarak yorumlanabilir ve sayfanın yapısını bozabilir. HTML encoding, bu karakterlerin güvenli bir şekilde işlenmesini sağlar.
+
+                        Kullanıcı Girdilerinin Sunucuya Gönderilme Süreci
+
+                        1. Kullanıcıdan Veri Alımı:
+
+                        Kullanıcı bir form doldurur ve veri gönderir. Bu veri, ham haliyle sunucuya ulaşır. Yani, formdan gelen veriler HTML encode edilmez.
+
+                        2. Sunucu Tarafında Doğrulama ve Temizleme:
+
+                        Veri sunucuya ulaştığında, bu verinin zararlı içerikler içerip içermediğini kontrol etmek ve temizlemek sunucunun sorumluluğundadır. Bu aşamada veri doğrulama ve temizleme işlemleri yapılır:
+
+                        Doğrulama (Validation): Sunucu, gelen verinin beklenen formatta olup olmadığını kontrol eder.
+
+                        Temizleme (Sanitization): Zararlı içerikleri (örneğin, script etiketleri) temizler.
+
+                    Veritabanı ve Uzaktan Gelen Verilerin İşlenmesi
+
+                    Veritabanından veya Uzaktan Gelen Veri:
+
+                    Veritabanından veya dış kaynaklardan gelen veriler, HTML içine yerleştirildiğinde HTML encode işlemi yapılır. Bu, verilerin güvenli bir şekilde gösterilmesini sağlar ve zararlı içeriklerin çalıştırılmasını engeller.
+
+                    HTML Encode İşlemi:
+                    HTML encode işlemi, özel karakterlerin (örneğin, <, >, &) güvenli metinlere dönüştürülmesi anlamına gelir. Bu dönüşüm, bu karakterlerin HTML içinde kod olarak değil, düz metin olarak görünmesini sağlar. Örneğin:
+
+                    < karakteri &lt; olarak
+                    > karakteri &gt; olarak
+                    & karakteri &amp; olarak
+                    " karakteri &quot; olarak
+                    ' karakteri &#39; olarak dönüşür.
+
+                    Örnek:
+
+                    Veritabanından gelen veri: <script>alert('XSS');</script>
+
+                    HTML encode edildikten sonra:
+
+                   <p>&lt;script&gt;alert('XSS');&lt;/script&gt;</p>
+
+                    Bu, tarayıcıda düz metin olarak görünür ve script çalıştırılmaz.
+
+                    Html.Raw Metodu
+                    Html.Raw() metodu, Razor Pages'da belirli bir string veriyi HTML encode etmeden doğrudan HTML içine yerleştirir. Bu yöntem, verinin HTML olarak yorumlanması gerektiğinde kullanılır.
+                *@
+
+                @*
+                    !!!ÖNEMLİ
+                    string.Join metodu string döndürürken, tırnak işaretleri string'in kendisinin bir parçası değildir.
+                        Bu tırnak işaretleri, string'in C# kodu içinde nerede başladığını ve bittiğini belirtir. String' in içeriğinde tırnak işaretleri yoktur.
+                    Razor sayfasında @ifadesi ile yazdırıldığında, string'in içeriği doğrudan HTML olarak çıktıya eklenir. Bu, string' in kendisinin HTML sayfasında gösterileceği anlamına gelir ve string literal'leri belirlemek için kullanılan tırnak işaretleri HTML çıktısında yer almaz.
+                *@
+
+                 labels: [@Html.Raw((string.Join(',', numberOfExpendituresByCategories.Select(expense => "'" + expense.Category + "(" + expense.Count + ")'"))))],
+                    datasets: [{
+                        label: '# of Votes',
+                       
+                       data: [@string.Join(',', numberOfExpendituresByCategories.Select(x=>x.Total.ToString("N0").Replace(".","")))],
+                       backgroundColor: [
+                       'rgba(255, 99, 132, 0.2)',
+                       'rgba(255, 159, 64, 0.2)',
+                       'rgba(255, 205, 86, 0.2)',
+                       'rgba(75, 192, 192, 0.2)',
+                       'rgba(153, 102, 255, 0.2)',
+                       'rgba(201, 203, 207, 0.2)'
+                       ],
+                       borderColor: [
+                       'rgb(255, 99, 132)',
+                       'rgb(255, 159, 64)',
+                       'rgb(255, 205, 86)',
+                       'rgb(75, 192, 192)',
+                       'rgb(54, 162, 235)',
+                       'rgb(201, 203, 207)'
+                       ],
+                       borderWidth: 1
+                       }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        //Chart.js'de "legend" (Türkçe: açıklama veya gösterge) bir grafik bileşeni olup, grafikteki veri kümelerinin neyi temsil ettiğini kullanıcıya açıklamak için kullanılır. Legend, grafikteki renkler veya desenler ile veri kümeleri arasındaki ilişkiyi gösterir.
+                        legend: {
+                            //display: Legend'in görüntülenip görüntülenmeyeceğini belirler. true veya false olarak ayarlanabilir.
+                            display: false
+                        },
+                        title: {
+                            text: "Number of Expenditures by Category",
+                            display: true
+                        }
+                    }
+                }
+            }
+            );
+
+            //secondChart
+
+            const secondChart = document.getElementById('secondChart');
+
+            new Chart(secondChart, {
+                type: 'line',
+                data: {
+                 labels: [@string.Join(',', expendituresByYears.Select(expense => expense.Year))],
+                    datasets: [{
+                       label: '# of Votes',
+                       data: [@(string.Join(',', expendituresByYears.Select(x=>x.Count)))],
+                       backgroundColor: [
+                       'rgba(255, 99, 132, 0.2)',
+                       'rgba(255, 159, 64, 0.2)',
+                       'rgba(255, 205, 86, 0.2)',
+                       'rgba(75, 192, 192, 0.2)',
+                       'rgba(153, 102, 255, 0.2)',
+                       'rgba(201, 203, 207, 0.2)'
+                       ],
+                       borderColor: [
+                       'rgb(255, 99, 132)',
+                       'rgb(255, 159, 64)',
+                       'rgb(255, 205, 86)',
+                       'rgb(75, 192, 192)',
+                       'rgb(54, 162, 235)',
+                       'rgb(201, 203, 207)'
+                       ],
+                       borderWidth: 1
+                       }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            text: "Expenditures By Years",
+                            display: true
+                        }
+                    }
+                }
+            }
+            );
+
+            //thirdChart
+            const thirdChart = document.getElementById('thirdChart');
+
+            new Chart(thirdChart, {
+                type: 'line',
+                data: {
+                 labels: [@string.Join(',', expendituresByYears.Select(expense => expense.Year))],
+                    datasets: [{
+                       label: '# of Votes',
+                       data: [@(string.Join(',', expendituresTotalsByYears.Select(x=>x.Total.ToString("N0").Replace(".",""))))],
+                       backgroundColor: [
+                       'rgba(255, 99, 132, 0.2)',
+                       'rgba(255, 159, 64, 0.2)',
+                       'rgba(255, 205, 86, 0.2)',
+                       'rgba(75, 192, 192, 0.2)',
+                       'rgba(153, 102, 255, 0.2)',
+                       'rgba(201, 203, 207, 0.2)'
+                       ],
+                       borderColor: [
+                       'rgb(255, 99, 132)',
+                       'rgb(255, 159, 64)',
+                       'rgb(255, 205, 86)',
+                       'rgb(75, 192, 192)',
+                       'rgb(54, 162, 235)',
+                       'rgb(201, 203, 207)'
+                       ],
+                       borderWidth: 1
+                       }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            text: "Expenditures Totals By Years",
+                            display: true
+                        }
+                    }
+                }
+            }
+            );
+        })
+    </script>
+}

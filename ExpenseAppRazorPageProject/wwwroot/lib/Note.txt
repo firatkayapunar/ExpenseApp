@@ -1,0 +1,49 @@
+﻿Client-Side Kütüphaneler
+Client-side kütüphaneler, genellikle web uygulamalarında görsel ve işlevsel zenginlik sağlamak için kullanılır. 
+Bu kütüphaneler, önceden yazılmış ve test edilmiş kod parçacıklarını içerir, bu sayede geliştiriciler tekrar tekrar aynı kodu yazmak zorunda kalmazlar. 
+******************************************************************
+
+Client-side (istemci tarafı) kütüphaneleri için genellikle NuGet yerine başka araçlar kullanılır. Bu araçlar ve kullanım amaçları şunlardır:
+
+npm (Node Package Manager):
+
+JavaScript ve front-end geliştirme için en yaygın kullanılan paket yöneticisidir. JavaScript kütüphaneleri ve araçlarını indirip yönetir.
+
+Yarn:
+
+npm ile benzer işlevlere sahip, ancak daha hızlı ve güvenilir paket yönetimi sunar.
+
+LibMan (Library Manager):
+
+ASP.NET Core projelerinde client-side kütüphaneleri yönetmek için kullanılan daha hafif ve hızlı bir araçtır. Sadece ihtiyaç duyduğunuz dosyaları indirmenize olanak tanır.
+
+******************************************************************
+Not:LibMan, client-side kütüphaneleri (JavaScript, CSS) yönetmek için kullanılır. NuGet ise server-side kütüphaneleri ve .NET bağımlılıklarını yönetmek için kullanılır.
+******************************************************************
+
+İşte bazı yaygın client-side kütüphaneler ve bunların içerikleri:
+
+CSS Frameworks ve Libraries:
+
+Bootstrap: Duyarlı (responsive) tasarımlar oluşturmak için kullanılır. Hazır CSS sınıfları ve JavaScript bileşenleri sunar.
+Tailwind CSS: Düşük seviyeli CSS framework, kullanıcının kendi stillerini kolayca tanımlamasını sağlar.
+
+JavaScript Frameworks ve Libraries:
+
+jQuery: DOM manipülasyonu, olay yönetimi, animasyonlar ve AJAX işlemlerini basitleştiren bir JavaScript kütüphanesi.
+React: Kullanıcı arayüzleri oluşturmak için kullanılan bir JavaScript kütüphanesi. Bileşen tabanlı mimarisi ile bilinir.
+Vue.js: Kullanıcı arayüzleri ve tek sayfalık uygulamalar geliştirmek için kullanılan bir başka popüler JavaScript framework'ü.
+
+Diğer Statik Dosyalar:
+
+Font Awesome: İkon setleri içerir ve web projelerinde sıkça kullanılır.
+Google Fonts: Web projelerinde kullanılmak üzere çeşitli yazı tipleri sağlar.
+
+******************************************************************
+LibMan ile client-side kütüphaneleri yönetirken belirli sağlayıcılar (providers) kullanarak bu kütüphaneleri indirebilirsiniz. Bu sağlayıcılar, kütüphanelerin kaynaklarını belirler. 
+
+CDN (Content Delivery Network) Sağlayıcıları: cdnjs, jsDelivr
+Bu sağlayıcılar, kütüphaneleri dünya çapındaki sunuculardan indirmenizi sağlar ve web sitenizin performansını artırır.
+
+Yerel Dosya Sistemi Sağlayıcıları: filesystem
+Bu, kütüphaneleri yerel dosya sisteminizden yönetmenizi ve indirmenizi sağlar, internet bağlantısı gerektirmez.

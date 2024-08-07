@@ -1,0 +1,120 @@
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Expense App</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="~/lib/toastr.js/toastr.min.css" rel="stylesheet" />
+    @await RenderSectionAsync("Styles", required: false)
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @*
+        💡asp-append-version="true" Nedir?
+
+        📌asp-append-version="true" özelliği, ASP.NET Core uygulamalarında statik dosyaların (CSS, JavaScript, resimler gibi) önbellekleme sorunlarını çözmek için kullanılır. Bu özellik, statik dosyaların URL'lerine bir sürüm numarası ekleyerek, tarayıcının eski bir dosyayı önbellekten yüklemesini engeller ve her zaman en güncel dosyanın yüklenmesini sağlar.
+
+        ✨ Kullanım Örneği
+
+        🔦<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+        Bu kod, site.css dosyasına bir sürüm numarası ekler. Örneğin, tarayıcıda şu şekilde görünebilir:
+
+        🔦<link rel="stylesheet" href="/css/site.css?v=AbCdEf123456" />
+
+        Bu şekilde, site.css dosyası değiştiğinde, sürüm numarası da değişir ve tarayıcı, güncellenmiş dosyayı indirir. Bu özellik, özellikle uygulama güncellemelerinden sonra eski dosyaların önbellekten yüklenmesini önlemek için faydalıdır.
+
+        💡Nasıl Çalışır?
+
+        📌Dosyanın Hash Değerinin Hesaplanması
+        Uygulama derlendiğinde veya çalıştırıldığında, ASP.NET Core statik dosyaların hash değerlerini hesaplar. Bu hash değeri, dosyanın içeriğine bağlı olarak değişir.
+
+        🔎Not: Hash değeri, bir dosyanın içeriğine bağlı olarak hesaplanan ve dosyanın içeriği değiştiğinde farklı bir değer alan sabit uzunlukta bir değerdir. Hash değeri, genellikle veri bütünlüğünü kontrol etmek ve veri değişikliklerini izlemek için kullanılır. ASP.NET Core, asp-append-version="true" özelliğini kullandığınızda, hash değerini otomatik olarak kendisi hesaplar.
+
+        📌URL'ye Sürüm Ekleme
+        asp-append-version="true" özelliği kullanıldığında, ilgili dosyanın URL'sine hash değeri eklenir. Örneğin, ~/css/site.css dosyasının hash değeri AbCdEf123456 ise URL şu şekilde olur: /css/site.css?v=AbCdEf123456.
+
+        📌Tarayıcının Yeni Sürümü İndirmesi
+
+        ✨Tarayıcı Belleği Kontrol Eder: Tarayıcı, dosyanın URL'sindeki sorgu dizesini (örneğin, v=AbCdEf123456) kontrol eder. Bu sorgu dizesi, tarayıcının önbelleğinde daha önce indirilen dosyanın URL'siyle karşılaştırılır.
+
+        ✨Sorgu Dizesi Farklıysa: Eğer bu sorgu dizesi, önbellekteki dosyanın URL'sinde yoksa veya farklıysa, tarayıcı bu dosyanın yeni bir versiyon olduğunu anlar. Bu durumda, tarayıcı, sunucudan dosyanın yeni versiyonunu indirir ve önbelleğe kaydeder. Aynı zamanda, önbellekte bulunan eski sürümü de siler. Böylece, yeni sürüm dosya tarayıcıda yerini alır ve kullanıcıya sunulur.
+
+        ✨Sorgu Dizesi Aynıysa: Eğer sorgu dizesi, önbellekteki dosyanın URL'siyle aynıysa, tarayıcı, önbellekteki dosyayı kullanır. Bu, gereksiz dosya indirmelerini önleyerek performansı artırır.
+
+        💡 Neden Önemlidir?
+
+        📌Önbellekleme Sorunlarını Önler: Bu mekanizma, tarayıcıların eski dosyaları önbellekten yüklemesini engeller. Bu sayede, kullanıcılar her zaman en güncel dosyaları kullanır.
+
+        📌Performansı Artırır: Gereksiz dosya indirmelerini önleyerek ağ trafiğini azaltır ve sayfa yükleme sürelerini kısaltır.
+
+        📌Kullanıcı Deneyimini İyileştirir: Kullanıcıların, uygulamanın en güncel ve doğru sürümünü kullanmalarını sağlar.
+    *@
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Expense App</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav">
+                        @if (ViewContext.HttpContext.Session.Keys.Contains("userid"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Expenses/List">Expenses</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (ViewContext.HttpContext.Session.Keys.Contains("userid"))
+                        {
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" class="nav-link text-dark">@ViewContext.HttpContext.Session.GetString("username")</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Logout">LogOut</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Register">Register</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Expense App - <a asp-area="" asp-page="/Privacy">Gizlilik Politikası</a>
+        </div>
+    </footer>
+
+    @*jQuery, $ veya jQuery fonksiyonu olarak başlar ve bu fonksiyon çağrıldığında bir jQuery nesnesi döner. Bu jQuery nesnesi, çeşitli yöntemler ve özellikler içerir.*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*Toastr yüklendiğinde, global bir toastr nesnesi oluşturulur. Bu nesne, bildirim mesajlarını yönetmek için kullanılacak çeşitli yöntemler ve yapılandırma seçenekleri sağlar.Toastr basit bir bildirim kütüphanesi olduğundan, sadece tek bir nesne ve fonksiyonlar yeterlidir.
+        jQuery ve DataTables ise daha kompleks bir yapı yönetimi gerektirdiğinden, constructor fonksiyonu kullanarak her tablo için bağımsız ve özelleştirilebilir örnekler oluşturur.*@
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
