@@ -59,9 +59,9 @@ Pages/Shared/
 
 => We added the jquery library. (Javascript) <br> (<script src="~/lib/jquery/dist/jquery.min.js"></script>)
 
-=>We added the Toastr library.(Javascript) <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
+=> We added the Toastr library.(Javascript) <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
 
-=>We added the Bootstrap (Javascript) library. <br> (<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>)
+=> We added the Bootstrap (Javascript) library. <br> (<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>)
 
 =>Additionally, we added another Javascript library. <br> (<script src="~/js/site.js" asp-append-version="true"></script>)
 <br>***Note: We added toastr settings here.
