@@ -2,9 +2,13 @@
 Solution
 ******************************
 => Veri tabanı işlemleri için EF Core ile ilgili yüklemeler yapacağım.
+<br>
 *Microsoft.EntityFrameworkCore
+<br>
 *Microsoft.EntityFrameworkCore.SqlServer
+<br>
 *Microsoft.EntityFrameworkCore.Tools
+<br>
 *Microsoft.EntityFrameworkCore.Proxies
 
 
@@ -22,24 +26,25 @@ Pages/Expenses/
 ******************************
 
 --List
---Burada DataTable kütüphanesini kullanacağım. Bunu yüklemek için wwwroot
-altında lib klasörüne gelerek yüklüyorum. (<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>)
 
---Fake Data kullanmak için Nuget paketlerinden bir Fake Data kütüphanesini
-indireceğim. (MFramework.Services.FakeData)
+=>Burada DataTable kütüphanesini kullanacağım. Bunu yüklemek için wwwroot
+altında lib klasörüne gelerek yüklüyorum. <br> (<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>)
+<br>
+=>Fake Data kullanmak için Nuget paketlerinden bir Fake Data kütüphanesini indireceğim. (MFramework.Services.FakeData)
 
---Burada Chart.js'i kullanacağım.(<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>)
+=>Burada Chart.js'i kullanacağım. <br> (<script src="htttps://cdn.jsdelivr.net/npm/chart.js"></script>)
+<br>
 **Not:Bunu yüklemek için wwwroot altında lib klasörüne gelerek de yükleme yapabilirdim.
 
 --Create
 
 => Burada Save düğmesinden sonra gelecek bildirim için Toaster.js'i kullanacağım. Bunu yüklemek için wwwroot
-altında lib klasörüne gelerek yüklüyorum.
+altında lib klasörüne gelerek yüklüyorum. <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
 
 ---Edit
 
 => Burada Save düğmesinden sonra gelecek bildirim için Toaster.js'i kullanacağım. Bunu yüklemek için wwwroot
-altında lib klasörüne gelerek yüklüyorum.
+altında lib klasörüne gelerek yüklüyorum. <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
 
 ******************************
 Pages/Shared/
@@ -47,19 +52,20 @@ Pages/Shared/
 
 --Layout
 
-=>Bootstrap kütüphanesini ekledik. (<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />)
+=>Bootstrap kütüphanesini ekledik. <br> (<link *rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />)
 
-=>Toastr kütüphanesini ekledik. (<link href="~/lib/toastr.js/toastr.min.css" rel="stylesheet" />)
+=>Toastr kütüphanesini ekledik. <br> (<link *rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />)
 
-=>Font awesome kütüphanesini ekledik. (<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">)
+=>Font awesome kütüphanesini ekledik. <br> (<link *rel="stylesheet" href="htttps://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">)
 
-=>Jquery kütüphanesini ekledik. (Javascript) (<script src="~/lib/jquery/dist/jquery.min.js"></script>)
+=>Jquery kütüphanesini ekledik. (Javascript) <br> (<script src="~/lib/jquery/dist/jquery.min.js"></script>)
 
-=>Toastr kütüphanesini ekledik. (Javascript) (<script src="~/lib/toastr.js/toastr.min.js"></script>)
+=>Toastr kütüphanesini ekledik. (Javascript) <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
 
-=>Bootstrap(Javascript) kütüphanesini ekledik. (<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>)
+=>Bootstrap(Javascript) kütüphanesini ekledik. <br> (<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>)
 
-=>Ek olarak bir Javascript kütüphanesi daha ekledik. (<script src="~/js/site.js" asp-append-version="true"></script>)
+=>Ek olarak bir Javascript kütüphanesi daha ekledik. <br> (<script src="~/js/site.js" asp-append-version="true"></script>)
+
 ***Not: Burada toastr ayarlarını ekledik.
     
     
