@@ -30,7 +30,8 @@ Pages/Expenses/
 
 =>Burada DataTable kütüphanesini kullanacağım. Bunu yüklemek için wwwroot
 altında lib klasörüne gelerek yüklüyorum. <br> (<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>)
-<br>
+
+
 =>Fake Data kullanmak için Nuget paketlerinden bir Fake Data kütüphanesini indireceğim. (MFramework.Services.FakeData)
 
 =>Burada Chart.js'i kullanacağım. <br> (<script src="htttps://cdn.jsdelivr.net/npm/chart.js"></script>)
