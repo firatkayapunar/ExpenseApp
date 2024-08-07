@@ -2,7 +2,7 @@
 ******************************
 Solution
 ******************************
-=> Veri tabanı işlemleri için EF Core ile ilgili yüklemeler yapacağım.
+=> I will install EF Core for database operations.
 <br>
 *Microsoft.EntityFrameworkCore
 <br>
@@ -12,14 +12,13 @@ Solution
 <br>
 *Microsoft.EntityFrameworkCore.Proxies
 
-
 ******************************
 Pages/
 ******************************
 
 --Login Page
 
-=>Burada Bootsnipp.com sitesinden hazır Login Page sayfalarını kullanabiliriz.
+=> Here we can use ready-made Login Page pages from Bootsnipp.com.
 
 --Register Page
 
@@ -29,25 +28,24 @@ Pages/Expenses/
 
 --List
 
-=>Burada DataTable kütüphanesini kullanacağım. Bunu yüklemek için wwwroot
-altında lib klasörüne gelerek yüklüyorum. <br> (<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>)
+=> I will use the DataTable library here. To install this, I go to the lib folder under wwwroot and install it.
+<br> (<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>)
 
+=> To use Fake Data, I will download a Fake Data library from Nuget packages. <br> (MFramework.Services.FakeData)
 
-=>Fake Data kullanmak için Nuget paketlerinden bir Fake Data kütüphanesini indireceğim. (MFramework.Services.FakeData)
-
-=>Burada Chart.js'i kullanacağım. <br> (<script src="htttps://cdn.jsdelivr.net/npm/chart.js"></script>)
+=> I will use Chart.js here. <br> (<script src="htttps://cdn.jsdelivr.net/npm/chart.js"></script>)
 <br>
-**Not:Bunu yüklemek için wwwroot altında lib klasörüne gelerek de yükleme yapabilirdim.
+**Note: To install this, I could also install it by going to the lib folder under wwwroot.
 
 --Create
 
-=> Burada Save düğmesinden sonra gelecek bildirim için Toaster.js'i kullanacağım. Bunu yüklemek için wwwroot
-altında lib klasörüne gelerek yüklüyorum.
+=> Here I will use Toaster.js for the notification that will come after the Save button. wwwroot to install this
+I go to the lib folder under it and install it.
 
 ---Edit
 
-=> Burada Save düğmesinden sonra gelecek bildirim için Toaster.js'i kullanacağım. Bunu yüklemek için wwwroot
-altında lib klasörüne gelerek yüklüyorum.
+=> Here I will use Toaster.js for the notification that will come after the Save button. wwwroot to install this
+I go to the lib folder under it and install it.
 
 ******************************
 Pages/Shared/
@@ -55,18 +53,18 @@ Pages/Shared/
 
 --Layout
 
-=>Bootstrap kütüphanesini ekledik. <br> (<link *rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />)
+=> We added the Bootstrap library. <br> (<link *rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />)
 
-=>Font awesome kütüphanesini ekledik. <br> (<link *rel="stylesheet" href="htttps://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">)
+=> We added the font awesome library. <br> (<link *rel="stylesheet" href="htttps://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">)
 
-=>Jquery kütüphanesini ekledik. (Javascript) <br> (<script src="~/lib/jquery/dist/jquery.min.js"></script>)
+=> We added the jquery library. (Javascript) <br> (<script src="~/lib/jquery/dist/jquery.min.js"></script>)
 
-=>Toastr kütüphanesini ekledik. (Javascript) <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
+=>We added the Toastr library.(Javascript) <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
 
-=>Bootstrap(Javascript) kütüphanesini ekledik. <br> (<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>)
+=>We added the Bootstrap (Javascript) library. <br> (<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>)
 
-=>Ek olarak bir Javascript kütüphanesi daha ekledik. <br> (<script src="~/js/site.js" asp-append-version="true"></script>)
+=>Additionally, we added another Javascript library. <br> (<script src="~/js/site.js" asp-append-version="true"></script>)
 
-***Not: Burada toastr ayarlarını ekledik.
+***Note: We added toastr settings here.
     
     
