@@ -1,3 +1,4 @@
+*It is an Expense App created by applying the Razor Pages method, one of the application development methods.*
 ******************************
 Solution
 ******************************
