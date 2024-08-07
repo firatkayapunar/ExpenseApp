@@ -39,12 +39,12 @@ altında lib klasörüne gelerek yüklüyorum. <br> (<script src="~/lib/datatabl
 --Create
 
 => Burada Save düğmesinden sonra gelecek bildirim için Toaster.js'i kullanacağım. Bunu yüklemek için wwwroot
-altında lib klasörüne gelerek yüklüyorum. <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
+altında lib klasörüne gelerek yüklüyorum.
 
 ---Edit
 
 => Burada Save düğmesinden sonra gelecek bildirim için Toaster.js'i kullanacağım. Bunu yüklemek için wwwroot
-altında lib klasörüne gelerek yüklüyorum. <br> (<script src="~/lib/toastr.js/toastr.min.js"></script>)
+altında lib klasörüne gelerek yüklüyorum.
 
 ******************************
 Pages/Shared/
@@ -53,8 +53,6 @@ Pages/Shared/
 --Layout
 
 =>Bootstrap kütüphanesini ekledik. <br> (<link *rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />)
-
-=>Toastr kütüphanesini ekledik. <br> (<link *rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />)
 
 =>Font awesome kütüphanesini ekledik. <br> (<link *rel="stylesheet" href="htttps://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">)
 
