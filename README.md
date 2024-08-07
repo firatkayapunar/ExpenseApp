@@ -17,6 +17,7 @@ Pages/
 ******************************
 
 --Login Page
+
 =>Burada Bootsnipp.com sitesinden hazır Login Page sayfalarını kullanabiliriz.
 
 --Register Page
