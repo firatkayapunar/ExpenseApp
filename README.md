@@ -64,7 +64,6 @@ Pages/Shared/
 =>We added the Bootstrap (Javascript) library. <br> (<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>)
 
 =>Additionally, we added another Javascript library. <br> (<script src="~/js/site.js" asp-append-version="true"></script>)
-
-***Note: We added toastr settings here.
+<br>***Note: We added toastr settings here.
     
     
