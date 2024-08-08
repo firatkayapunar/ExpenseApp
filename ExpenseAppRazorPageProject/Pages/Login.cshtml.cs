@@ -112,9 +112,7 @@ namespace ExpenseAppRazorPageProject.Pages
                        Middleware, sessionId2 kullanarak oturum verilerini yükledi ve HttpContext.Session nesnesine atadı.
                        Sunucu, HttpContext.Session.GetInt32("userid") çağrısı ile Fırat'ın kullanıcı ID'sini aldı ve Fırat'ı tanıdı.
 
-
                         Not: 
-                       
                         Web sunucuları, gelen her HTTP isteğini bağımsız bir iş parçacığında işler. Bu, her isteğin ayrı olarak ele alınmasını ve diğer isteklerden bağımsız olmasını sağlar. Örneğin, iki kullanıcı (Ahmet ve Fırat) aynı anda bir web sayfasına eriştiğinde, her ikisinin isteği de farklı iş parçacıklarında işlenir. 
                         Bu, ASP.NET Core'un her bir isteği bağımsız olarak işlemesini sağlar. Her iş parçacığı, kendi yerel değişkenlerine ve oturum verilerine sahiptir. Ancak, statik değişkenler bu iş parçacıkları arasında paylaşılan verilerdir.
                                        

@@ -13,7 +13,7 @@ namespace ExpenseAppRazorPageProject.Entities
             if (context.HttpContext.Session.Keys.Contains("userid") == false)
             {
                 context.Result = new RedirectToPageResult("/Login");
-                //metot dönüş tipi void olduğu iiçin sadece return diyip metottan çıkmasını istiyorum. Zaten sistem context.Result'un içini dolu görünce yönlendirecek.
+                //metot dönüş tipi void olduğu için sadece return diyip metottan çıkmasını istiyorum. Zaten sistem context.Result'un içini dolu görünce yönlendirecek.
                 return;
             }
         }
